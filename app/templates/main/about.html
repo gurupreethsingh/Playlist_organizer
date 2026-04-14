@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}About | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <div class="container">
+        <div class="about-hero-card">
+            <div class="row align-items-center g-4 g-xl-5">
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <span class="section-badge">About the Platform</span>
+
+                        <h1 class="about-title">
+                            A modern Flask and SQLite website for smart song and playlist management
+                        </h1>
+
+                        <p class="about-description">
+                            Playlist Organizer is a full-stack music platform where users can upload MP3 songs,
+                            play audio directly in the browser, create playlists, and automatically organize music
+                            using rich metadata and smart filters.
+                        </p>
+
+                        <p class="about-description">
+                            It is designed to look and feel like a real website with premium spacing,
+                            balanced visuals, structured sections, and proper responsive behavior.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="about-image-card">
+                        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80"
+                            alt="Music system and website experience" class="about-main-image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-info-section">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="info-card h-100">
+                        <span class="info-card-icon"><i class="bi bi-stars"></i></span>
+                        <h3>What the application offers</h3>
+                        <p>
+                            The platform provides a complete flow for song uploads, audio playback,
+                            playlist management, and organization using language, genre, artist,
+                            release year, movie songs, private albums, and singer categories.
+                        </p>
+                        <p class="mb-0">
+                            It is designed as a cleaner and more realistic full-stack project rather
+                            than a plain form-based academic interface.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="info-card h-100">
+                        <span class="info-card-icon"><i class="bi bi-layers"></i></span>
+                        <h3>Built with modular architecture</h3>
+                        <p>
+                            The application is split into dedicated modules for authentication,
+                            user dashboard, songs, playlists, and admin management.
+                        </p>
+                        <p class="mb-0">
+                            This structure makes the project easier to maintain, scale, and present
+                            professionally as a portfolio-grade web application.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="role-section">
+            <div class="section-heading">
+                <span class="section-badge">User Roles</span>
+                <h2 class="section-title">Two main user types power the application</h2>
+                <p class="section-description">
+                    Role-based access keeps the system organized for both subscribed users
+                    and administrators.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="role-card h-100">
+                        <span class="role-card-icon"><i class="bi bi-person-badge"></i></span>
+                        <h4>Superadmin</h4>
+                        <p>
+                            Superadmins can manage all users, control subscriptions, access all playlists,
+                            review uploaded songs, and handle platform-wide administration.
+                        </p>
+
+                        <ul class="role-list">
+                            <li>Manage all users</li>
+                            <li>Deactivate or reactivate subscriptions</li>
+                            <li>Access every playlist</li>
+                            <li>Manage all uploaded songs</li>
+                            <li>View admin dashboards and statistics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="role-card h-100">
+                        <span class="role-card-icon"><i class="bi bi-person-circle"></i></span>
+                        <h4>Subscribed User</h4>
+                        <p>
+                            Users can upload MP3 songs, create playlists, play audio, and organize
+                            their personal music collection with smart filters.
+                        </p>
+
+                        <ul class="role-list">
+                            <li>Upload and store MP3 songs</li>
+                            <li>Create and manage playlists</li>
+                            <li>Add and remove songs</li>
+                            <li>Play music inside the application</li>
+                            <li>Use personal dashboard and smart organization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-section">
+            <div class="row align-items-center g-4 g-xl-5">
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <div class="tech-content">
+                        <span class="section-badge">Technology Stack</span>
+                        <h2 class="section-title text-start">Built with practical full-stack technologies</h2>
+                        <p class="section-description text-start">
+                            The app uses Flask for backend, SQLite for storage, Bootstrap for responsive UI,
+                            and browser-based audio playback for MP3 streaming.
+                        </p>
+
+                        <div class="tech-pill-group">
+                            <span class="tech-pill">Flask</span>
+                            <span class="tech-pill">SQLite</span>
+                            <span class="tech-pill">Bootstrap 5</span>
+                            <span class="tech-pill">Jinja2</span>
+                            <span class="tech-pill">MP3 Upload</span>
+                            <span class="tech-pill">Audio Player</span>
+                            <span class="tech-pill">Responsive UI</span>
+                            <span class="tech-pill">Role Access</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="tech-image-card">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+                            alt="Development workspace" class="tech-image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="section-badge">Ready to Explore</span>
+                        <h3 class="cta-title">Use a cleaner and smarter way to manage your music</h3>
+                        <p class="cta-description">
+                            From uploads to playlists to admin control, Playlist Organizer is built
+                            to feel like a complete modern web platform.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+                        {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'superadmin' %}
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-primary">
+                            Open Admin Dashboard
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('user.dashboard') }}" class="btn btn-hero btn-hero-primary">
+                            Open Dashboard
+                        </a>
+                        {% endif %}
+                        {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-hero btn-hero-primary">
+                            Start Now
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

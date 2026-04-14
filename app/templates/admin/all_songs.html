@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}All Songs | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="admin-module-section">
+    <div class="container">
+        <div class="admin-module-hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">Admin Songs</span>
+                    <h1 class="admin-module-title">View all uploaded songs</h1>
+                    <p class="admin-module-description">
+                        Review songs uploaded across the platform and see who uploaded each track.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-outline">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-search-card">
+            <form method="GET">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-10">
+                        <label class="form-label-modern">Search Songs</label>
+                        <input type="text" name="search" class="form-control form-control-modern"
+                            placeholder="Search by title, artist, album, or user" value="{{ search }}" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn auth-submit-btn w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if songs %}
+        <div class="admin-song-list">
+            {% for song in songs %}
+            <div class="admin-song-item">
+                <div class="admin-song-main">
+                    <h5>{{ song.title }}</h5>
+                    <p>
+                        {{ song.artist_name }}
+                        {% if song.language %}• {{ song.language }}{% endif %}
+                        {% if song.genre %}• {{ song.genre }}{% endif %}
+                    </p>
+
+                    <div class="admin-song-owner">
+                        Uploaded by:
+                        <strong>
+                            {{ song.owner.full_name if song.owner and song.owner.full_name else (song.owner.username if
+                            song.owner else 'Unknown') }}
+                        </strong>
+                    </div>
+
+                    <audio controls preload="metadata" class="song-audio-player mt-3">
+                        <source src="{{ url_for('static', filename='uploads/songs/' + song.file_name) }}"
+                            type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <div class="admin-song-side">
+                    <span>{{ song.uploaded_at.strftime('%d %b %Y') if song.uploaded_at else '-' }}</span>
+                    <a href="{{ url_for('songs.song_detail', song_id=song.id) }}" class="song-link-btn">
+                        Open
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-lite">No songs found.</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Song | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="songs-page-section">
+    <div class="container">
+        <div class="songs-form-layout">
+            <div class="row g-4 g-xl-5">
+                <div class="col-lg-5">
+                    <div class="songs-side-card">
+                        <span class="section-badge">Upload MP3</span>
+                        <h2 class="songs-side-title">Add a new song to your music library</h2>
+                        <p class="songs-side-text">
+                            Upload an MP3 file along with its metadata like title, artist,
+                            album, language, genre, year, and song type.
+                        </p>
+
+                        <div class="songs-side-feature-list">
+                            <div class="songs-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Only MP3 files are accepted</span>
+                            </div>
+                            <div class="songs-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Metadata helps smart categorization</span>
+                            </div>
+                            <div class="songs-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Uploaded songs can be played in-browser</span>
+                            </div>
+                        </div>
+
+                        <div class="songs-side-image-wrap">
+                            <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1200&q=80"
+                                alt="Upload music" class="songs-side-image" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="songs-form-card">
+                        <div class="auth-form-header">
+                            <h2>Upload New Song</h2>
+                            <p>Fill in the song information and upload your MP3 file.</p>
+                        </div>
+
+                        <form method="POST" enctype="multipart/form-data" novalidate class="auth-form-grid">
+                            {{ form.hidden_tag() }}
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Song Title</label>
+                                        {{ form.title(class="form-control form-control-modern", placeholder="Enter song
+                                        title") }}
+                                        {% for error in form.title.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Artist Name</label>
+                                        {{ form.artist_name(class="form-control form-control-modern", placeholder="Enter
+                                        artist name") }}
+                                        {% for error in form.artist_name.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Album Name</label>
+                                        {{ form.album_name(class="form-control form-control-modern", placeholder="Enter
+                                        album name") }}
+                                        {% for error in form.album_name.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Movie Name</label>
+                                        {{ form.movie_name(class="form-control form-control-modern", placeholder="Enter
+                                        movie name if any") }}
+                                        {% for error in form.movie_name.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Language</label>
+                                        {{ form.language(class="form-select form-control-modern") }}
+                                        {% for error in form.language.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Genre</label>
+                                        {{ form.genre(class="form-select form-control-modern") }}
+                                        {% for error in form.genre.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Singer Type</label>
+                                        {{ form.singer_gender(class="form-select form-control-modern") }}
+                                        {% for error in form.singer_gender.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Release Date</label>
+                                        {{ form.release_date(class="form-control form-control-modern") }}
+                                        {% for error in form.release_date.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label class="form-label-modern">Duration</label>
+                                        {{ form.duration(class="form-control form-control-modern", placeholder="e.g.
+                                        03:45") }}
+                                        {% for error in form.duration.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="songs-checkbox-row">
+                                <label class="songs-checkbox-card">
+                                    {{ form.is_movie_song(class="form-check-input me-2") }}
+                                    <span>Movie Song</span>
+                                </label>
+
+                                <label class="songs-checkbox-card">
+                                    {{ form.is_private_album(class="form-check-input me-2") }}
+                                    <span>Private Album</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">MP3 File</label>
+                                {{ form.audio_file(class="form-control form-control-modern form-file-modern") }}
+                                {% for error in form.audio_file.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn auth-submit-btn">
+                                {{ form.submit.label.text }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

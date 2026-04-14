@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Playlist Details | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="playlist-page-section">
+    <div class="container">
+        <div class="playlist-detail-card">
+            <div class="row g-4 g-xl-5">
+                <div class="col-lg-5">
+                    <div class="playlist-detail-side">
+                        <div class="playlist-detail-art">
+                            <i class="bi bi-collection-play-fill"></i>
+                        </div>
+
+                        <h1 class="playlist-detail-title">{{ playlist.playlist_name }}</h1>
+                        <p class="playlist-detail-description">
+                            {{ playlist.description if playlist.description else "No description added for this
+                            playlist." }}
+                        </p>
+
+                        <div class="playlist-detail-meta">
+                            <div><strong>Created:</strong> {{ playlist.created_at.strftime('%d %b %Y') if
+                                playlist.created_at else '-' }}</div>
+                            <div><strong>Updated:</strong> {{ playlist.updated_at.strftime('%d %b %Y') if
+                                playlist.updated_at else '-' }}</div>
+                        </div>
+
+                        <div class="playlist-detail-actions">
+                            <a href="{{ url_for('playlists.add_songs_to_playlist', playlist_id=playlist.id) }}"
+                                class="btn btn-hero btn-hero-primary">
+                                Add Songs
+                            </a>
+
+                            <a href="{{ url_for('playlists.edit_playlist', playlist_id=playlist.id) }}"
+                                class="btn btn-hero btn-hero-outline">
+                                Edit Playlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="playlist-song-list-card">
+                        <div class="panel-header">
+                            <div>
+                                <span class="panel-eyebrow">Playlist Songs</span>
+                                <h3>Songs inside this playlist</h3>
+                            </div>
+                        </div>
+
+                        {% if playlist_song_links %}
+                        <div class="playlist-song-list">
+                            {% for link in playlist_song_links %}
+                            <div class="playlist-song-item">
+                                <div class="playlist-song-item-main">
+                                    <h6>{{ link.song.title }}</h6>
+                                    <p>
+                                        {{ link.song.artist_name }}
+                                        {% if link.song.language %}• {{ link.song.language }}{% endif %}
+                                        {% if link.song.genre %}• {{ link.song.genre }}{% endif %}
+                                    </p>
+
+                                    <audio controls preload="metadata" class="song-audio-player mt-2">
+                                        <source
+                                            src="{{ url_for('static', filename='uploads/songs/' + link.song.file_name) }}"
+                                            type="audio/mpeg" />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+
+                                <div class="playlist-song-item-actions">
+                                    <a href="{{ url_for('songs.song_detail', song_id=link.song.id) }}"
+                                        class="song-link-btn">
+                                        View
+                                    </a>
+
+                                    <form method="POST"
+                                        action="{{ url_for('playlists.remove_song_from_playlist', playlist_id=playlist.id, song_id=link.song.id) }}">
+                                        <button type="submit" class="playlist-delete-btn">
+                                            Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="empty-state-lite">
+                            No songs have been added to this playlist yet.
+                        </div>
+                        {% endif %}
+
+                        <div class="playlist-detail-footer-actions">
+                            <a href="{{ url_for('playlists.my_playlists') }}" class="song-link-btn">
+                                Back to My Playlists
+                            </a>
+
+                            <a href="{{ url_for('playlists.add_songs_to_playlist', playlist_id=playlist.id) }}"
+                                class="song-link-btn">
+                                Add More Songs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

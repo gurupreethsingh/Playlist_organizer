@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}All Playlists | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="admin-module-section">
+    <div class="container">
+        <div class="admin-module-hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">Admin Playlists</span>
+                    <h1 class="admin-module-title">View all playlists across users</h1>
+                    <p class="admin-module-description">
+                        Review playlists created by all subscribed users and monitor their contents at a high level.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-outline">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-search-card">
+            <form method="GET">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-10">
+                        <label class="form-label-modern">Search Playlists</label>
+                        <input type="text" name="search" class="form-control form-control-modern"
+                            placeholder="Search by playlist or user" value="{{ search }}" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn auth-submit-btn w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if playlists %}
+        <div class="admin-playlist-grid">
+            {% for playlist in playlists %}
+            <div class="admin-playlist-card">
+                <div class="admin-playlist-top">
+                    <div class="playlist-icon">
+                        <i class="bi bi-collection-play-fill"></i>
+                    </div>
+
+                    <div class="playlist-song-count">
+                        {{ playlist_song_counts.get(playlist.id, 0) }} Song(s)
+                    </div>
+                </div>
+
+                <div class="admin-playlist-body">
+                    <h4>{{ playlist.playlist_name }}</h4>
+                    <p>{{ playlist.description if playlist.description else "No description added." }}</p>
+
+                    <div class="admin-playlist-owner">
+                        Owner:
+                        <strong>
+                            {{ playlist.owner.full_name if playlist.owner and playlist.owner.full_name else
+                            (playlist.owner.username if playlist.owner else 'Unknown') }}
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="admin-playlist-meta">
+                    <span>Created: {{ playlist.created_at.strftime('%d %b %Y') if playlist.created_at else '-' }}</span>
+                </div>
+
+                <div class="admin-playlist-actions">
+                    <a href="{{ url_for('playlists.playlist_detail', playlist_id=playlist.id) }}" class="song-link-btn">
+                        Open Playlist
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-lite">No playlists found.</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

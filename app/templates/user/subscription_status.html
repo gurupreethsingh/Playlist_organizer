@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Status | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="dashboard-page-section">
+    <div class="container">
+        <div class="dashboard-panel subscription-status-card">
+            <div class="panel-header">
+                <div>
+                    <span class="panel-eyebrow">Account Status</span>
+                    <h3>Subscription Overview</h3>
+                </div>
+            </div>
+
+            <div class="subscription-status-content">
+                <p>
+                    Hello <strong>{{ current_user.full_name if current_user.full_name else current_user.username
+                        }}</strong>,
+                    this page shows the current status of your subscription.
+                </p>
+
+                {% if current_user.is_subscription_active %}
+                <div class="subscription-banner subscription-banner-active">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <h5>Subscription Active</h5>
+                        <p class="mb-0">
+                            Your account is active and you can continue using all subscribed user features.
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="subscription-banner subscription-banner-inactive">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <div>
+                        <h5>Subscription Inactive</h5>
+                        <p class="mb-0">
+                            Your subscription is currently inactive. Please contact the superadmin to reactivate your
+                            access.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="subscription-actions">
+                    <a href="{{ url_for('user.dashboard') }}" class="btn btn-hero btn-hero-primary">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

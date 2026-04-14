@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}My Songs | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="songs-page-section">
+    <div class="container">
+        <div class="songs-hero-card">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">Songs Library</span>
+                    <h1 class="songs-page-title">Manage your uploaded songs and music collection</h1>
+                    <p class="songs-page-description">
+                        Browse your uploaded MP3 songs, search by title or artist, and filter
+                        your library by language and genre.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('songs.upload_song') }}" class="btn btn-hero btn-hero-primary">
+                        <i class="bi bi-cloud-arrow-up me-2"></i>Upload New Song
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="songs-filter-card">
+            <form method="GET" class="songs-filter-form">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-4">
+                        <label class="form-label-modern">Search</label>
+                        <input type="text" name="search" class="form-control form-control-modern"
+                            placeholder="Search by title, artist, album, or movie" value="{{ search }}" />
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <label class="form-label-modern">Language</label>
+                        <select name="language" class="form-select form-control-modern">
+                            <option value="">All Languages</option>
+                            {% for language in languages %}
+                            <option value="{{ language }}" {% if selected_language==language %}selected{% endif %}>
+                                {{ language }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <label class="form-label-modern">Genre</label>
+                        <select name="genre" class="form-select form-control-modern">
+                            <option value="">All Genres</option>
+                            {% for genre in genres %}
+                            <option value="{{ genre }}" {% if selected_genre==genre %}selected{% endif %}>
+                                {{ genre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn auth-submit-btn w-100">
+                            Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if songs %}
+        <div class="songs-grid">
+            {% for song in songs %}
+            <div class="song-card">
+                <div class="song-card-top">
+                    <div class="song-card-icon">
+                        <i class="bi bi-music-note-beamed"></i>
+                    </div>
+
+                    <div class="song-card-actions dropdown">
+                        <button class="btn song-action-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('songs.song_detail', song_id=song.id) }}">
+                                    View Details
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('songs.edit_song', song_id=song.id) }}">
+                                    Edit Song
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ url_for('songs.delete_song', song_id=song.id) }}">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        Delete Song
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="song-card-body">
+                    <h4>{{ song.title }}</h4>
+                    <p class="song-card-artist">{{ song.artist_name }}</p>
+
+                    <div class="song-tag-wrap">
+                        {% if song.language %}
+                        <span class="song-tag">{{ song.language }}</span>
+                        {% endif %}
+                        {% if song.genre %}
+                        <span class="song-tag">{{ song.genre }}</span>
+                        {% endif %}
+                        {% if song.singer_gender %}
+                        <span class="song-tag">{{ song.singer_gender }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="song-meta-list">
+                        <div><strong>Album:</strong> {{ song.album_name if song.album_name else '-' }}</div>
+                        <div><strong>Movie:</strong> {{ song.movie_name if song.movie_name else '-' }}</div>
+                        <div><strong>Year:</strong> {{ song.release_year if song.release_year else '-' }}</div>
+                    </div>
+
+                    <div class="song-player-wrap">
+                        <audio controls preload="metadata" class="song-audio-player">
+                            <source src="{{ url_for('static', filename='uploads/songs/' + song.file_name) }}"
+                                type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="song-card-footer">
+                    <a href="{{ url_for('songs.song_detail', song_id=song.id) }}" class="song-link-btn">
+                        View Details
+                    </a>
+                    <a href="{{ url_for('songs.edit_song', song_id=song.id) }}" class="song-link-btn">
+                        Edit
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="songs-empty-card">
+            <div class="songs-empty-icon">
+                <i class="bi bi-music-note-list"></i>
+            </div>
+            <h3>No songs found</h3>
+            <p>
+                Upload your first MP3 song to start building your personal music library.
+            </p>
+            <a href="{{ url_for('songs.upload_song') }}" class="btn btn-hero btn-hero-primary">
+                Upload Song
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

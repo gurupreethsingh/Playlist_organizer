@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Logs | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="admin-module-section">
+    <div class="container">
+        <div class="admin-module-hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">Subscription Logs</span>
+                    <h1 class="admin-module-title">Track subscription changes</h1>
+                    <p class="admin-module-description">
+                        Review when subscriptions were deactivated or reactivated and who performed the action.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-outline">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if logs %}
+        <div class="admin-log-list">
+            {% for log in logs %}
+            <div class="admin-log-item">
+                <div class="admin-log-main">
+                    <h5>
+                        {{ log.user.full_name if log.user and log.user.full_name else (log.user.username if log.user
+                        else 'Unknown User') }}
+                    </h5>
+                    <p>
+                        Action:
+                        <strong>{{ log.action_type|capitalize }}</strong>
+                        {% if log.remarks %}• {{ log.remarks }}{% endif %}
+                    </p>
+                    <div class="admin-log-sub">
+                        Done by:
+                        <strong>
+                            {{ log.admin_user.full_name if log.admin_user and log.admin_user.full_name else
+                            (log.admin_user.username if log.admin_user else 'Unknown Admin') }}
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="admin-log-side">
+                    {{ log.created_at.strftime('%d %b %Y, %I:%M %p') if log.created_at else '-' }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-lite">No subscription logs found.</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

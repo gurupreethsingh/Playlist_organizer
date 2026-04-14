@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="dashboard-page-section">
+    <div class="container">
+        <div class="dashboard-hero-card">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">User Dashboard</span>
+                    <h1 class="dashboard-page-title">
+                        Welcome back, {{ current_user.full_name if current_user.full_name else current_user.username }}
+                    </h1>
+                    <p class="dashboard-page-description">
+                        Manage your uploaded songs, playlists, and smart organization in one place.
+                        This dashboard gives you a quick overview of your personal music library.
+                    </p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="dashboard-status-box">
+                        <h6>Subscription Status</h6>
+                        {% if current_user.is_subscription_active %}
+                        <span class="status-pill status-active">Active Subscription</span>
+                        {% else %}
+                        <span class="status-pill status-inactive">Inactive Subscription</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-music-note-list"></i></div>
+                <div class="stat-value">{{ total_uploaded_songs }}</div>
+                <div class="stat-label">Uploaded Songs</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-collection-play"></i></div>
+                <div class="stat-value">{{ total_playlists }}</div>
+                <div class="stat-label">Playlists</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-plus-circle"></i></div>
+                <div class="stat-value">{{ total_songs_in_playlists }}</div>
+                <div class="stat-label">Songs in Playlists</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-translate"></i></div>
+                <div class="stat-value">{{ total_languages }}</div>
+                <div class="stat-label">Languages</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-vinyl"></i></div>
+                <div class="stat-value">{{ total_genres }}</div>
+                <div class="stat-label">Genres</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-person-lines-fill"></i></div>
+                <div class="stat-value">{{ total_artists }}</div>
+                <div class="stat-label">Artists</div>
+            </div>
+        </div>
+
+        <div class="row g-4 dashboard-content-grid">
+            <div class="col-xl-8">
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Quick Overview</span>
+                            <h3>Library Summary</h3>
+                        </div>
+                    </div>
+
+                    <div class="summary-grid">
+                        <div class="summary-box">
+                            <h6>Movie Songs</h6>
+                            <strong>{{ movie_song_count }}</strong>
+                        </div>
+
+                        <div class="summary-box">
+                            <h6>Private Albums</h6>
+                            <strong>{{ private_album_count }}</strong>
+                        </div>
+
+                        <div class="summary-box">
+                            <h6>Uploaded Songs</h6>
+                            <strong>{{ total_uploaded_songs }}</strong>
+                        </div>
+
+                        <div class="summary-box">
+                            <h6>Created Playlists</h6>
+                            <strong>{{ total_playlists }}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Recent Activity</span>
+                            <h3>Recently Uploaded Songs</h3>
+                        </div>
+                    </div>
+
+                    {% if recent_songs %}
+                    <div class="table-lite">
+                        {% for song in recent_songs %}
+                        <div class="table-lite-row">
+                            <div class="table-lite-main">
+                                <h6>{{ song.title }}</h6>
+                                <p>
+                                    {{ song.artist_name }}
+                                    {% if song.language %}• {{ song.language }}{% endif %}
+                                    {% if song.genre %}• {{ song.genre }}{% endif %}
+                                </p>
+                            </div>
+                            <div class="table-lite-side">
+                                {{ song.uploaded_at.strftime('%d %b %Y') if song.uploaded_at else '-' }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">
+                        No songs uploaded yet.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Recent Activity</span>
+                            <h3>Recently Created Playlists</h3>
+                        </div>
+                    </div>
+
+                    {% if recent_playlists %}
+                    <div class="table-lite">
+                        {% for playlist in recent_playlists %}
+                        <div class="table-lite-row">
+                            <div class="table-lite-main">
+                                <h6>{{ playlist.playlist_name }}</h6>
+                                <p>{{ playlist.description if playlist.description else 'No description added.' }}</p>
+                            </div>
+                            <div class="table-lite-side">
+                                {{ playlist.created_at.strftime('%d %b %Y') if playlist.created_at else '-' }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">
+                        No playlists created yet.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Breakdown</span>
+                            <h3>Top Languages</h3>
+                        </div>
+                    </div>
+
+                    {% if language_breakdown %}
+                    <div class="metric-list">
+                        {% for item, count in language_breakdown %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No language data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Breakdown</span>
+                            <h3>Top Genres</h3>
+                        </div>
+                    </div>
+
+                    {% if genre_breakdown %}
+                    <div class="metric-list">
+                        {% for item, count in genre_breakdown %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No genre data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Breakdown</span>
+                            <h3>Singer Categories</h3>
+                        </div>
+                    </div>
+
+                    {% if singer_breakdown %}
+                    <div class="metric-list">
+                        {% for item, count in singer_breakdown %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No singer category data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Quick Actions</span>
+                            <h3>Get Started</h3>
+                        </div>
+                    </div>
+
+                    <div class="quick-action-list">
+                        <a href="{{ url_for('songs.my_songs') }}" class="quick-action-btn">
+                            <i class="bi bi-music-note-list"></i>
+                            <span>Open My Songs</span>
+                        </a>
+
+                        <a href="{{ url_for('playlists.my_playlists') }}" class="quick-action-btn">
+                            <i class="bi bi-collection-play"></i>
+                            <span>Open My Playlists</span>
+                        </a>
+
+                        <a href="{{ url_for('user.subscription_status') }}" class="quick-action-btn">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Subscription Status</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

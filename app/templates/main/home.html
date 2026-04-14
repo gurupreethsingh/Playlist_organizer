@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-card">
+            <div class="row align-items-center g-4 g-xl-5">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <span class="section-badge">Modern Music Management</span>
+
+                        <h1 class="hero-title">
+                            Manage your songs, playlists, and MP3 library with a clean modern website experience
+                        </h1>
+
+                        <p class="hero-description">
+                            Upload MP3 songs, create playlists, stream audio in the browser,
+                            and automatically organize your collection using language, genre,
+                            artist, release year, and album-based smart filters.
+                        </p>
+
+                        <div class="hero-actions">
+                            {% if current_user.is_authenticated %}
+                            {% if current_user.role == 'superadmin' %}
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-primary">
+                                Go to Admin Dashboard
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('user.dashboard') }}" class="btn btn-hero btn-hero-primary">
+                                Go to Dashboard
+                            </a>
+                            {% endif %}
+
+                            <a href="{{ url_for('playlists.my_playlists') }}" class="btn btn-hero btn-hero-outline">
+                                Explore My Playlists
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('auth.register') }}" class="btn btn-hero btn-hero-primary">
+                                Get Started
+                            </a>
+
+                            <a href="{{ url_for('main.about') }}" class="btn btn-hero btn-hero-outline">
+                                Learn More
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="hero-stat-grid">
+                            <div class="hero-stat-card">
+                                <span class="hero-stat-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                <div>
+                                    <h6>MP3 Uploads</h6>
+                                    <p>Upload and manage your personal song library.</p>
+                                </div>
+                            </div>
+
+                            <div class="hero-stat-card">
+                                <span class="hero-stat-icon"><i class="bi bi-play-circle"></i></span>
+                                <div>
+                                    <h6>Audio Player</h6>
+                                    <p>Listen to music directly inside the application.</p>
+                                </div>
+                            </div>
+
+                            <div class="hero-stat-card">
+                                <span class="hero-stat-icon"><i class="bi bi-funnel"></i></span>
+                                <div>
+                                    <h6>Smart Filters</h6>
+                                    <p>Organize songs by genre, language, artist, and more.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="hero-visual">
+                        <div class="hero-image-card">
+                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80"
+                                alt="Music dashboard and playlist experience" class="hero-main-image" />
+                        </div>
+
+                        <div class="floating-card floating-card-top">
+                            <span class="floating-card-icon"><i class="bi bi-music-note-list"></i></span>
+                            <div>
+                                <h6>Playlist Control</h6>
+                                <p>Create and manage playlists easily.</p>
+                            </div>
+                        </div>
+
+                        <div class="floating-card floating-card-bottom">
+                            <span class="floating-card-icon"><i class="bi bi-bar-chart-line"></i></span>
+                            <div>
+                                <h6>Smart Dashboard</h6>
+                                <p>Organized music, counts, and insights.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <div class="section-heading">
+                <span class="section-badge">Core Features</span>
+                <h2 class="section-title">Everything needed for a premium playlist organizer</h2>
+                <p class="section-description">
+                    A modern music platform with clean structure, responsive layout, audio playback,
+                    playlist workflows, and role-based management.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                        <h4>MP3 Upload Support</h4>
+                        <p>
+                            Upload songs with full metadata such as title, artist, language,
+                            genre, year, movie type, and album type.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-collection-play"></i></span>
+                        <h4>Playlist Management</h4>
+                        <p>
+                            Create playlists, add or remove songs, and keep your music library
+                            organized in a structured way.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-headphones"></i></span>
+                        <h4>Integrated Player</h4>
+                        <p>
+                            Play uploaded songs directly in the browser without needing
+                            any external music application.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-diagram-3"></i></span>
+                        <h4>Automatic Organization</h4>
+                        <p>
+                            Group music using smart filters like language, genre, artist,
+                            release year, and album or movie category.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-people"></i></span>
+                        <h4>User and Admin Roles</h4>
+                        <p>
+                            Support subscribed users and superadmin workflows with proper
+                            role-based navigation and control.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-bar-chart"></i></span>
+                        <h4>Dashboard Analytics</h4>
+                        <p>
+                            Show statistics, summaries, counts, and charts for both users
+                            and administrators.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="showcase-section">
+            <div class="row align-items-center g-4 g-xl-5">
+                <div class="col-lg-6">
+                    <div class="showcase-image-card">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80"
+                            alt="Listening to music" class="showcase-image" />
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="showcase-content">
+                        <span class="section-badge">Why This App</span>
+                        <h2 class="section-title text-start">Built like a real modern web platform</h2>
+                        <p class="section-description text-start">
+                            This is not just a plain project page. It is designed to feel like
+                            a complete website with strong visual structure, image sections,
+                            premium cards, and clear user flow.
+                        </p>
+
+                        <ul class="showcase-list">
+                            <li><i class="bi bi-check-circle-fill"></i> White premium background with subtle colors</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Proper spacing and modern section rhythm</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Balanced image proportions</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Mobile-friendly responsive layout</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Strong full-stack project presentation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="section-badge">Start Today</span>
+                        <h3 class="cta-title">Create a smarter music management experience</h3>
+                        <p class="cta-description">
+                            Upload songs, manage playlists, and organize everything with a cleaner
+                            and more professional interface.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('songs.my_songs') }}" class="btn btn-hero btn-hero-primary">
+                            Open My Songs
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-hero btn-hero-primary">
+                            Create Account
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

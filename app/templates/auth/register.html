@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Register | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="auth-page-section">
+    <div class="container">
+        <div class="auth-page-wrap">
+            <div class="row g-4 g-xl-5 align-items-stretch">
+                <div class="col-lg-6">
+                    <div class="auth-showcase-card auth-showcase-register">
+                        <span class="section-badge">Create Your Account</span>
+                        <h1 class="auth-showcase-title">
+                            Start building your personal music library with a modern experience
+                        </h1>
+                        <p class="auth-showcase-text">
+                            Register once, get subscribed instantly, upload your MP3 songs,
+                            create playlists, and organize your collection with smart filters.
+                        </p>
+
+                        <div class="auth-feature-list">
+                            <div class="auth-feature-item">
+                                <span><i class="bi bi-check-circle-fill"></i></span>
+                                <div>
+                                    <h6>Instant account access</h6>
+                                    <p>Users are registered, subscribed, and logged in right away.</p>
+                                </div>
+                            </div>
+
+                            <div class="auth-feature-item">
+                                <span><i class="bi bi-check-circle-fill"></i></span>
+                                <div>
+                                    <h6>Modern playlist workflows</h6>
+                                    <p>Create playlists, upload songs, and manage your music in one place.</p>
+                                </div>
+                            </div>
+
+                            <div class="auth-feature-item">
+                                <span><i class="bi bi-check-circle-fill"></i></span>
+                                <div>
+                                    <h6>Smart song organization</h6>
+                                    <p>Use metadata like genre, language, and artist for better sorting.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="auth-showcase-image-wrap">
+                            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80"
+                                alt="Music registration and app onboarding" class="auth-showcase-image" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="auth-form-card">
+                        <div class="auth-form-header">
+                            <h2>Create Account</h2>
+                            <p>Fill in your details to start using Playlist Organizer.</p>
+                        </div>
+
+                        <form method="POST" novalidate class="auth-form-grid">
+                            {{ form.hidden_tag() }}
+
+                            <div class="form-group-modern">
+                                <label for="{{ form.full_name.id }}" class="form-label-modern">Full Name</label>
+                                {{ form.full_name(class="form-control form-control-modern", placeholder="Enter your full
+                                name") }}
+                                {% for error in form.full_name.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label for="{{ form.username.id }}" class="form-label-modern">Username</label>
+                                {{ form.username(class="form-control form-control-modern", placeholder="Choose a
+                                username") }}
+                                {% for error in form.username.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label for="{{ form.email.id }}" class="form-label-modern">Email Address</label>
+                                {{ form.email(class="form-control form-control-modern", placeholder="Enter your email
+                                address") }}
+                                {% for error in form.email.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="{{ form.password.id }}" class="form-label-modern">Password</label>
+                                        {{ form.password(class="form-control form-control-modern", placeholder="Enter
+                                        password") }}
+                                        {% for error in form.password.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="{{ form.confirm_password.id }}" class="form-label-modern">Confirm
+                                            Password</label>
+                                        {{ form.confirm_password(class="form-control form-control-modern",
+                                        placeholder="Confirm password") }}
+                                        {% for error in form.confirm_password.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn auth-submit-btn">
+                                {{ form.submit.label.text }}
+                            </button>
+
+                            <div class="auth-form-footer">
+                                <p class="mb-0">
+                                    Already have an account?
+                                    <a href="{{ url_for('auth.login') }}">Login here</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

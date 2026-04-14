@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Song Details | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="songs-page-section">
+    <div class="container">
+        <div class="song-detail-card">
+            <div class="row g-4 g-xl-5 align-items-start">
+                <div class="col-lg-5">
+                    <div class="song-detail-side">
+                        <div class="song-detail-art">
+                            <i class="bi bi-disc-fill"></i>
+                        </div>
+
+                        <h1 class="song-detail-title">{{ song.title }}</h1>
+                        <p class="song-detail-artist">{{ song.artist_name }}</p>
+
+                        <div class="song-tag-wrap mb-4">
+                            {% if song.language %}
+                            <span class="song-tag">{{ song.language }}</span>
+                            {% endif %}
+                            {% if song.genre %}
+                            <span class="song-tag">{{ song.genre }}</span>
+                            {% endif %}
+                            {% if song.singer_gender %}
+                            <span class="song-tag">{{ song.singer_gender }}</span>
+                            {% endif %}
+                        </div>
+
+                        <audio controls preload="metadata" class="song-detail-player">
+                            <source src="{{ url_for('static', filename='uploads/songs/' + song.file_name) }}"
+                                type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                        </audio>
+
+                        <div class="song-detail-actions">
+                            <a href="{{ url_for('songs.edit_song', song_id=song.id) }}"
+                                class="btn btn-hero btn-hero-primary">
+                                Edit Song
+                            </a>
+
+                            <form method="POST" action="{{ url_for('songs.delete_song', song_id=song.id) }}">
+                                <button type="submit" class="btn btn-hero btn-hero-outline">
+                                    Delete Song
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="song-detail-info-card">
+                        <div class="panel-header">
+                            <div>
+                                <span class="panel-eyebrow">Song Information</span>
+                                <h3>Metadata and file details</h3>
+                            </div>
+                        </div>
+
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Title</label>
+                                <div>{{ song.title }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Artist</label>
+                                <div>{{ song.artist_name }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Album</label>
+                                <div>{{ song.album_name if song.album_name else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Movie</label>
+                                <div>{{ song.movie_name if song.movie_name else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Language</label>
+                                <div>{{ song.language if song.language else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Genre</label>
+                                <div>{{ song.genre if song.genre else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Release Date</label>
+                                <div>{{ song.release_date.strftime('%d %b %Y') if song.release_date else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Release Year</label>
+                                <div>{{ song.release_year if song.release_year else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Singer Type</label>
+                                <div>{{ song.singer_gender if song.singer_gender else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Duration</label>
+                                <div>{{ song.duration if song.duration else '-' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Movie Song</label>
+                                <div>{{ 'Yes' if song.is_movie_song else 'No' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Private Album</label>
+                                <div>{{ 'Yes' if song.is_private_album else 'No' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>File Type</label>
+                                <div>{{ song.mime_type if song.mime_type else 'audio/mpeg' }}</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>File Size</label>
+                                <div>
+                                    {% if song.file_size %}
+                                    {{ "%.2f"|format(song.file_size / (1024 * 1024)) }} MB
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="detail-item detail-item-full">
+                                <label>Uploaded On</label>
+                                <div>{{ song.uploaded_at.strftime('%d %b %Y, %I:%M %p') if song.uploaded_at else '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="song-detail-footer-actions">
+                            <a href="{{ url_for('songs.my_songs') }}" class="song-link-btn">
+                                Back to My Songs
+                            </a>
+                            <a href="{{ url_for('songs.edit_song', song_id=song.id) }}" class="song-link-btn">
+                                Edit Metadata
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

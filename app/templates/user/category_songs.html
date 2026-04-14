@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Category Songs{% endblock %}
+
+{% block content %}
+<section class="songs-page-section">
+    <div class="container">
+
+        <h2 class="mb-4">
+            {{ type | capitalize }} : {{ value }}
+        </h2>
+
+        {% if songs %}
+        <div class="songs-grid">
+            {% for song in songs %}
+            <div class="song-card">
+                <h4>{{ song.title }}</h4>
+                <p>{{ song.artist_name }}</p>
+
+                <audio controls>
+                    <source src="{{ url_for('static', filename='uploads/songs/' + song.file_name) }}">
+                </audio>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No songs found.</p>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

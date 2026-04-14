@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="auth-page-section">
+    <div class="container">
+        <div class="auth-page-wrap">
+            <div class="row g-4 g-xl-5 align-items-stretch">
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <div class="auth-form-card">
+                        <div class="auth-form-header">
+                            <h2>Welcome Back</h2>
+                            <p>Login to access your songs, playlists, and dashboard.</p>
+                        </div>
+
+                        <form method="POST" novalidate class="auth-form-grid">
+                            {{ form.hidden_tag() }}
+
+                            <div class="form-group-modern">
+                                <label for="{{ form.email.id }}" class="form-label-modern">Email Address</label>
+                                {{ form.email(class="form-control form-control-modern", placeholder="Enter your email
+                                address") }}
+                                {% for error in form.email.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group-modern">
+                                <div class="auth-inline-label">
+                                    <label for="{{ form.password.id }}" class="form-label-modern mb-0">Password</label>
+                                    <a href="{{ url_for('auth.forgot_password') }}" class="auth-inline-link">Forgot
+                                        password?</a>
+                                </div>
+                                {{ form.password(class="form-control form-control-modern", placeholder="Enter your
+                                password") }}
+                                {% for error in form.password.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="remember-wrap">
+                                <label class="remember-label">
+                                    {{ form.remember_me(class="form-check-input me-2") }}
+                                    <span>Remember me</span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn auth-submit-btn">
+                                {{ form.submit.label.text }}
+                            </button>
+
+                            <div class="auth-form-footer">
+                                <p class="mb-0">
+                                    Don’t have an account?
+                                    <a href="{{ url_for('auth.register') }}">Create one now</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="auth-showcase-card auth-showcase-login">
+                        <span class="section-badge">Secure Access</span>
+                        <h1 class="auth-showcase-title">
+                            Access your playlists, uploaded songs, and personalized music dashboard
+                        </h1>
+                        <p class="auth-showcase-text">
+                            Continue your music workflow with quick login, premium layout,
+                            role-based access, and a seamless user experience.
+                        </p>
+
+                        <div class="auth-stat-grid">
+                            <div class="auth-stat-box">
+                                <strong>Playlists</strong>
+                                <span>Organize songs with custom collections.</span>
+                            </div>
+                            <div class="auth-stat-box">
+                                <strong>MP3 Library</strong>
+                                <span>Access your uploaded music anytime.</span>
+                            </div>
+                            <div class="auth-stat-box">
+                                <strong>Smart Filters</strong>
+                                <span>Find songs by metadata in seconds.</span>
+                            </div>
+                        </div>
+
+                        <div class="auth-showcase-image-wrap">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80"
+                                alt="Music login experience" class="auth-showcase-image" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

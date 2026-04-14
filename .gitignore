@@ -1,0 +1,130 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Flask / instance
+# =========================
+instance/
+*.db
+*.sqlite3
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+*.out
+
+# =========================
+# Testing / coverage
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Build / packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# Flask migrations cache
+# =========================
+migrations/__pycache__/
+
+# =========================
+# Uploaded songs / media
+# =========================
+app/static/uploads/
+app/static/uploads/**
+uploads/
+media/
+
+# =========================
+# Images you do NOT want on GitHub
+# =========================
+app/static/images/
+app/static/images/**
+images/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.bmp
+
+# =========================
+# Audio files
+# =========================
+*.mp3
+*.wav
+*.aac
+*.flac
+*.ogg
+*.m4a
+
+# =========================
+# Video files
+# =========================
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# =========================
+# Documents / generated exports
+# =========================
+*.pdf
+*.csv
+*.xlsx
+*.docx
+*.pptx
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.bak

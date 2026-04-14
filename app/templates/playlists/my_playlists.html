@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}My Playlists | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="playlist-page-section">
+    <div class="container">
+        <div class="playlist-hero-card">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">My Playlists</span>
+                    <h1 class="playlist-page-title">Manage and organize your playlists</h1>
+                    <p class="playlist-page-description">
+                        Create playlists, edit them, and add songs from your uploaded music library.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('playlists.create_playlist') }}" class="btn btn-hero btn-hero-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Create Playlist
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="playlist-filter-card">
+            <form method="GET" class="playlist-filter-form">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-10">
+                        <label class="form-label-modern">Search Playlist</label>
+                        <input type="text" name="search" class="form-control form-control-modern"
+                            placeholder="Search by playlist name" value="{{ search }}" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn auth-submit-btn w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if playlists %}
+        <div class="playlist-grid">
+            {% for playlist in playlists %}
+            <div class="playlist-card">
+                <div class="playlist-card-top">
+                    <div class="playlist-icon">
+                        <i class="bi bi-collection-play-fill"></i>
+                    </div>
+
+                    <div class="playlist-song-count">
+                        {{ playlist_song_counts.get(playlist.id, 0) }} Song(s)
+                    </div>
+                </div>
+
+                <div class="playlist-card-body">
+                    <h4>{{ playlist.playlist_name }}</h4>
+                    <p>
+                        {{ playlist.description if playlist.description else "No description added for this playlist."
+                        }}
+                    </p>
+                </div>
+
+                <div class="playlist-card-meta">
+                    <span>Created: {{ playlist.created_at.strftime('%d %b %Y') if playlist.created_at else '-' }}</span>
+                </div>
+
+                <div class="playlist-card-actions">
+                    <a href="{{ url_for('playlists.playlist_detail', playlist_id=playlist.id) }}" class="song-link-btn">
+                        View
+                    </a>
+                    <a href="{{ url_for('playlists.edit_playlist', playlist_id=playlist.id) }}" class="song-link-btn">
+                        Edit
+                    </a>
+                    <a href="{{ url_for('playlists.add_songs_to_playlist', playlist_id=playlist.id) }}"
+                        class="song-link-btn">
+                        Add Songs
+                    </a>
+
+                    <form method="POST" action="{{ url_for('playlists.delete_playlist', playlist_id=playlist.id) }}">
+                        <button type="submit" class="playlist-delete-btn">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="playlist-empty-card">
+            <div class="playlist-empty-icon">
+                <i class="bi bi-collection-play"></i>
+            </div>
+            <h3>No playlists found</h3>
+            <p>Create your first playlist and start grouping your uploaded songs.</p>
+            <a href="{{ url_for('playlists.create_playlist') }}" class="btn btn-hero btn-hero-primary">
+                Create Playlist
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

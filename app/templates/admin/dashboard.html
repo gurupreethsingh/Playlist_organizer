@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="dashboard-page-section admin-dashboard-page">
+    <div class="container">
+        <div class="dashboard-hero-card admin-hero-card">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">Admin Dashboard</span>
+                    <h1 class="dashboard-page-title">
+                        Platform Overview for {{ current_user.full_name if current_user.full_name else
+                        current_user.username }}
+                    </h1>
+                    <p class="dashboard-page-description">
+                        Monitor users, subscriptions, playlists, songs, and platform activity
+                        from a centralized administrative dashboard.
+                    </p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="dashboard-status-box">
+                        <h6>Admin Access</h6>
+                        <span class="status-pill status-admin">Superadmin Control Enabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-stats-grid admin-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-people"></i></div>
+                <div class="stat-value">{{ total_users }}</div>
+                <div class="stat-label">Registered Users</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="stat-value">{{ active_subscriptions }}</div>
+                <div class="stat-label">Active Subscriptions</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-shield-x"></i></div>
+                <div class="stat-value">{{ inactive_subscriptions }}</div>
+                <div class="stat-label">Inactive Subscriptions</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-collection-play"></i></div>
+                <div class="stat-value">{{ total_playlists }}</div>
+                <div class="stat-label">Total Playlists</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-music-note-list"></i></div>
+                <div class="stat-value">{{ total_songs }}</div>
+                <div class="stat-label">Total Songs</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-graph-up"></i></div>
+                <div class="stat-value">{{ total_languages }}</div>
+                <div class="stat-label">Languages in Platform</div>
+            </div>
+        </div>
+
+        <div class="row g-4 dashboard-content-grid">
+            <div class="col-xl-8">
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Latest Platform Activity</span>
+                            <h3>Recently Registered Users</h3>
+                        </div>
+                    </div>
+
+                    {% if latest_users %}
+                    <div class="table-lite">
+                        {% for user in latest_users %}
+                        <div class="table-lite-row">
+                            <div class="table-lite-main">
+                                <h6>{{ user.full_name }}</h6>
+                                <p>{{ user.email }} • @{{ user.username }}</p>
+                            </div>
+                            <div class="table-lite-side">
+                                {{ user.created_at.strftime('%d %b %Y') if user.created_at else '-' }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No users found yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Latest Platform Activity</span>
+                            <h3>Recently Created Playlists</h3>
+                        </div>
+                    </div>
+
+                    {% if latest_playlists %}
+                    <div class="table-lite">
+                        {% for playlist in latest_playlists %}
+                        <div class="table-lite-row">
+                            <div class="table-lite-main">
+                                <h6>{{ playlist.playlist_name }}</h6>
+                                <p>
+                                    Owner:
+                                    {{ playlist.owner.full_name if playlist.owner and playlist.owner.full_name else
+                                    (playlist.owner.username if playlist.owner else 'Unknown') }}
+                                </p>
+                            </div>
+                            <div class="table-lite-side">
+                                {{ playlist.created_at.strftime('%d %b %Y') if playlist.created_at else '-' }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No playlists found yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Latest Platform Activity</span>
+                            <h3>Recently Uploaded Songs</h3>
+                        </div>
+                    </div>
+
+                    {% if latest_songs %}
+                    <div class="table-lite">
+                        {% for song in latest_songs %}
+                        <div class="table-lite-row">
+                            <div class="table-lite-main">
+                                <h6>{{ song.title }}</h6>
+                                <p>
+                                    {{ song.artist_name }}
+                                    {% if song.owner %}• {{ song.owner.full_name if song.owner.full_name else
+                                    song.owner.username }}{% endif %}
+                                </p>
+                            </div>
+                            <div class="table-lite-side">
+                                {{ song.uploaded_at.strftime('%d %b %Y') if song.uploaded_at else '-' }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No songs found yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Platform Breakdown</span>
+                            <h3>Top Languages</h3>
+                        </div>
+                    </div>
+
+                    {% if top_languages %}
+                    <div class="metric-list">
+                        {% for item, count in top_languages %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No language data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Platform Breakdown</span>
+                            <h3>Top Genres</h3>
+                        </div>
+                    </div>
+
+                    {% if top_genres %}
+                    <div class="metric-list">
+                        {% for item, count in top_genres %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No genre data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Platform Breakdown</span>
+                            <h3>Top Artists</h3>
+                        </div>
+                    </div>
+
+                    {% if top_artists %}
+                    <div class="metric-list">
+                        {% for item, count in top_artists %}
+                        <div class="metric-list-item">
+                            <span>{{ item }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No artist data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">User Activity</span>
+                            <h3>Users by Playlists</h3>
+                        </div>
+                    </div>
+
+                    {% if users_with_playlist_counts %}
+                    <div class="metric-list">
+                        {% for user, count in users_with_playlist_counts %}
+                        <div class="metric-list-item">
+                            <span>{{ user.full_name if user.full_name else user.username }}</span>
+                            <strong>{{ count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No user playlist data yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="dashboard-panel mt-4">
+                    <div class="panel-header">
+                        <div>
+                            <span class="panel-eyebrow">Subscription Activity</span>
+                            <h3>Recent Subscription Logs</h3>
+                        </div>
+                    </div>
+
+                    {% if latest_subscription_logs %}
+                    <div class="metric-list">
+                        {% for log in latest_subscription_logs %}
+                        <div class="metric-list-item metric-list-item-stacked">
+                            <div>
+                                <span>{{ log.user.full_name if log.user and log.user.full_name else (log.user.username
+                                    if log.user else 'Unknown User') }}</span>
+                                <small>{{ log.action_type|capitalize }}</small>
+                            </div>
+                            <strong>{{ log.created_at.strftime('%d %b') if log.created_at else '-' }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state-lite">No subscription logs yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

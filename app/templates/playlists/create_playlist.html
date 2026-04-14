@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Create Playlist | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="playlist-page-section">
+    <div class="container">
+        <div class="playlist-form-layout">
+            <div class="row g-4 g-xl-5">
+                <div class="col-lg-5">
+                    <div class="playlist-side-card">
+                        <span class="section-badge">Create Playlist</span>
+                        <h2 class="playlist-side-title">Start a new playlist for your music collection</h2>
+                        <p class="playlist-side-text">
+                            Create playlists for genres, moods, artists, occasions, languages,
+                            or any custom grouping you want.
+                        </p>
+
+                        <div class="playlist-side-feature-list">
+                            <div class="playlist-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Create playlists for different moods and genres</span>
+                            </div>
+                            <div class="playlist-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Add songs from your uploaded library anytime</span>
+                            </div>
+                            <div class="playlist-side-feature-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Keep your music organized in a cleaner way</span>
+                            </div>
+                        </div>
+
+                        <div class="playlist-side-image-wrap">
+                            <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=1200&q=80"
+                                alt="Create playlist" class="playlist-side-image" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="playlist-form-card">
+                        <div class="auth-form-header">
+                            <h2>Create New Playlist</h2>
+                            <p>Enter playlist details below.</p>
+                        </div>
+
+                        <form method="POST" novalidate class="auth-form-grid">
+                            {{ form.hidden_tag() }}
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">Playlist Name</label>
+                                {{ form.playlist_name(class="form-control form-control-modern", placeholder="Enter
+                                playlist name") }}
+                                {% for error in form.playlist_name.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">Description</label>
+                                {{ form.description(class="form-control form-control-modern", placeholder="Enter
+                                playlist description") }}
+                                {% for error in form.description.errors %}
+                                <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn auth-submit-btn">
+                                {{ form.submit.label.text }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

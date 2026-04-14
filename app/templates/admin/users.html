@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}All Users | Playlist Organizer{% endblock %}
+
+{% block content %}
+<section class="admin-module-section">
+    <div class="container">
+        <div class="admin-module-hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-badge">User Management</span>
+                    <h1 class="admin-module-title">Manage all subscribed users</h1>
+                    <p class="admin-module-description">
+                        View user accounts, monitor uploaded songs and playlists, and control subscription status.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-hero btn-hero-outline">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-search-card">
+            <form method="GET">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-10">
+                        <label class="form-label-modern">Search Users</label>
+                        <input type="text" name="search" class="form-control form-control-modern"
+                            placeholder="Search by name, username, or email" value="{{ search }}" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn auth-submit-btn w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if users %}
+        <div class="admin-user-grid">
+            {% for user in users %}
+            <div class="admin-user-card">
+                <div class="admin-user-top">
+                    <div class="admin-user-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+
+                    {% if user.is_subscription_active %}
+                    <span class="status-pill status-active">Active</span>
+                    {% else %}
+                    <span class="status-pill status-inactive">Inactive</span>
+                    {% endif %}
+                </div>
+
+                <div class="admin-user-body">
+                    <h4>{{ user.full_name }}</h4>
+                    <p class="admin-user-handle">@{{ user.username }}</p>
+                    <p class="admin-user-email">{{ user.email }}</p>
+
+                    <div class="admin-user-stats">
+                        <div>
+                            <strong>{{ user_song_counts.get(user.id, 0) }}</strong>
+                            <span>Songs</span>
+                        </div>
+                        <div>
+                            <strong>{{ user_playlist_counts.get(user.id, 0) }}</strong>
+                            <span>Playlists</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-user-meta">
+                        <span>Joined: {{ user.created_at.strftime('%d %b %Y') if user.created_at else '-' }}</span>
+                    </div>
+                </div>
+
+                <div class="admin-user-actions">
+                    {% if user.is_subscription_active %}
+                    <form method="POST" action="{{ url_for('admin.deactivate_subscription', user_id=user.id) }}">
+                        <button type="submit" class="playlist-delete-btn w-100">
+                            Deactivate Subscription
+                        </button>
+                    </form>
+                    {% else %}
+                    <form method="POST" action="{{ url_for('admin.reactivate_subscription', user_id=user.id) }}">
+                        <button type="submit" class="btn btn-hero btn-hero-primary w-100">
+                            Reactivate Subscription
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-lite">No users found.</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
